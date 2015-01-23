@@ -1,0 +1,9 @@
+[package]
+
+name = "sdl2_net"
+version = "0.0.1"
+authors = ["Nathan Braswell <miloignis@gmail.com>"]
+description = "SDL2_net bindings and wrappers"
+licence = "MIT"
+
+[dependencies]
