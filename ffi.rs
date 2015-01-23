@@ -9,11 +9,11 @@ struct SDLNet_SocketSet;
 // Linking setup (using https://github.com/xsleonard/rust-sdl2_image/ as an example)
 #[cfg(target_os="macos")]
 mod mac {
-    #[cfg(mac_framework)]
-    #[link(kind="framework", name="SDL2_net")]
-    extern {}
+    //#[cfg(mac_framework)]
+    //#[link(kind="framework", name="SDL2_net")]
+    //extern {}
 
-    #[cfg(not(mac_framework))]
+    //#[cfg(not(mac_framework))]
     #[link(name="SDL2_net")]
     extern {}
 }
@@ -21,6 +21,10 @@ mod mac {
 mod others {
     #[link(name="SDL2_net")]
     extern {}
+}
+
+pub fn testing() {
+    println!("wa");
 }
 
 extern "C" {
