@@ -27,7 +27,7 @@ extern "C" {
     //General
     pub fn SDLNet_Init() -> ();
     pub fn SDLNet_Quit() -> ();
-    pub fn SDLNet_GetError() -> *mut c_char;
+    pub fn SDLNet_GetError() -> *const c_char;
 
     // Name Resolution
     pub fn SDLNet_ResolveHost(address: *mut IPaddress, host: *const c_char, port: u16) -> c_int;
