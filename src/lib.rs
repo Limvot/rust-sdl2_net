@@ -3,6 +3,7 @@ extern crate libc;
 
 use libc::{c_int, c_char, c_void};
 use std::ffi::CString;
+use std::ptr;
 
 pub mod ffi;
 pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet};
@@ -20,6 +21,19 @@ pub fn get_error() -> String {
     unsafe {
         let raw = &ffi::SDLNet_GetError();
         std::str::from_utf8(std::ffi::c_str_to_bytes(raw)).unwrap().to_string()
+    }
+}
+
+pub fn become_host(port: u16) -> Option<ffi::IPaddress> {
+    let mut address = ffi::IPaddress { host: 0, port: 0};
+    let mut result = 0;
+    unsafe {
+        result = ffi::SDLNet_ResolveHost(&mut address, ptr::null() , port)
+    }
+    if (result == 0){
+        Some(address)
+    } else {
+        None
     }
 }
 
