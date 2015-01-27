@@ -23,9 +23,16 @@ pub fn get_error() -> String {
     }
 }
 
-pub fn resolve_host(mut address: IPaddress, host: &str, port: u16) -> i32 {
+pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
+    let mut address = ffi::IPaddress { host: 0, port: 0 };
+    let mut result = 0;
     unsafe {
-        ffi::SDLNet_ResolveHost(&mut address, CString::from_slice(host.as_bytes()).as_ptr(), port)
+        result = ffi::SDLNet_ResolveHost(&mut address, CString::from_slice(host.as_bytes()).as_ptr(), port)
+    }
+    if (result == 0) {
+        Some(address)
+    } else {
+        None
     }
 }
 

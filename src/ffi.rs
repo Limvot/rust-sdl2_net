@@ -2,7 +2,7 @@
 use libc::{c_int, c_char, c_void};
 
 #[repr(C)]
-pub struct IPaddress { host: u32, port: u16 }
+pub struct IPaddress { pub host: u32, pub port: u16 }
 pub struct _TCPsocket;
 pub struct _SDLNet_SocketSet;
 
