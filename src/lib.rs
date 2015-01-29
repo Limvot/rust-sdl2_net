@@ -75,25 +75,25 @@ pub fn tcp_close(sock: &TCPsocket) -> () {
     }
 }
 
-pub fn tcp_accept<'a>(server: &'a TCPsocket) -> TCPsocket {
+pub fn tcp_accept(server: &TCPsocket) -> TCPsocket {
     unsafe {
         TCPsocket { opaquePtr: ffi::SDLNet_TCP_Accept(server.opaquePtr) }
     }
 }
 
-pub fn tcp_get_peer_address<'a>(sock: &'a TCPsocket) -> Box<*mut IPaddress> {
+pub fn tcp_get_peer_address(sock: &TCPsocket) -> Box<*mut IPaddress> {
     unsafe {
         Box::new(ffi::SDLNet_TCP_GetPeerAddress(sock.opaquePtr))
     }
 }
 
-pub fn tcp_send<'a>(sock: &'a TCPsocket, data: &[u8]) -> () {
+pub fn tcp_send(sock: &TCPsocket, data: &[u8]) -> () {
     unsafe {
         ffi::SDLNet_TCP_Send(sock.opaquePtr, data.as_ptr() as *const c_void, data.len() as i32);
     }
 }
 
-pub fn tcp_recv<'a>(sock: &'a TCPsocket, maxlen: i32) -> Vec<u8> {
+pub fn tcp_recv(sock: &TCPsocket, maxlen: i32) -> Vec<u8> {
     let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
     unsafe {
         let read_ammnt = ffi::SDLNet_TCP_Recv(sock.opaquePtr, data.as_mut_ptr() as *mut c_void, data.len() as i32);
