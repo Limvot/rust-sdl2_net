@@ -6,7 +6,7 @@ use std::ffi::CString;
 use std::ptr;
 
 pub mod ffi;
-pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet};
+pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
 pub struct TCPsocket {
     opaquePtr: *mut _TCPsocket,
@@ -135,6 +135,6 @@ pub fn check_sockets<'b>(set: &'b SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready<'c>(sock: &'c TCPsocket) -> i32 {
     unsafe {
-        ffi::SDLNet_SocketReady(sock.opaquePtr)
+        ffi::SDLNet_SocketReady(sock.opaquePtr as *mut _SDLNet_GenericSocket)
     }
 }

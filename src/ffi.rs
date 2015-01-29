@@ -5,6 +5,7 @@ use libc::{c_int, c_char, c_void};
 pub struct IPaddress { pub host: u32, pub port: u16 }
 pub struct _TCPsocket;
 pub struct _SDLNet_SocketSet;
+pub struct _SDLNet_GenericSocket;
 
 // Linking setup (using https://github.com/xsleonard/rust-sdl2_image/ as an example)
 #[cfg(target_os="macos")]
@@ -51,6 +52,6 @@ extern "C" {
     pub fn SDLNet_AddSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
     pub fn SDLNet_DelSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
     pub fn SDLNet_CheckSockets(set: *mut _SDLNet_SocketSet, timeout: u32) -> c_int;
-    pub fn SDLNet_SocketReady(sock: *mut _TCPsocket) -> c_int; // documentation unclear as to what it takes in - assmuing tcp for now
+    pub fn SDLNet_SocketReady(sock: *mut _SDLNet_GenericSocket) -> c_int; // documentation unclear as to what it takes in - assmuing tcp for now
 }
 
