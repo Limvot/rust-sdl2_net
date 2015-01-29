@@ -69,7 +69,7 @@ pub fn tcp_open() -> Option<TCPsocket> {
     }
 }
 
-pub fn tcp_close<'a>(sock: &'a TCPsocket) -> () {
+pub fn tcp_close(sock: &TCPsocket) -> () {
     unsafe {
         ffi::SDLNet_TCP_Close(sock.opaquePtr)
     }
@@ -108,32 +108,32 @@ pub fn alloc_socket_set(maxsockets: i32) -> SocketSet {
     }
 }
 
-pub fn free_socket_set<'a>(set: &'a SocketSet) -> () {
+pub fn free_socket_set(set: &SocketSet) -> () {
     unsafe {
         ffi::SDLNet_FreeSocketSet(set.opaquePtr);
     }
 }
 
-pub fn add_socket<'a>(set: &'a SocketSet, sock: &'a TCPsocket) -> i32 {
+pub fn add_socket(set: &SocketSet, sock: &TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_AddSocket(set.opaquePtr, sock.opaquePtr)
     }
 }
 
 // Maybe should take in the box here as it may get deleted.... not sure
-pub fn del_socket<'a>(set: &'a SocketSet, sock: &'a TCPsocket) -> i32 {
+pub fn del_socket(set: &SocketSet, sock: &TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_DelSocket(set.opaquePtr, sock.opaquePtr)
     }
 }
 
-pub fn check_sockets<'b>(set: &'b SocketSet, timeout: u32) -> i32 {
+pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
     unsafe {
         ffi::SDLNet_CheckSockets(set.opaquePtr, timeout)
     }
 }
 
-pub fn socket_ready<'c>(sock: &'c TCPsocket) -> i32 {
+pub fn socket_ready(sock: &TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_SocketReady(sock.opaquePtr as *mut c_void)
     }
