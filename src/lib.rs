@@ -57,11 +57,15 @@ pub fn resolve_ip(mut address: IPaddress) -> String {
     }
 }
 
-pub fn tcp_open() -> TCPsocket {
+pub fn tcp_open() -> Option<TCPsocket> {
     let mut address = ffi::IPaddress { host: 0, port: 0};
-    
     unsafe {
-        TCPsocket { opaquePtr: ffi::SDLNet_TCP_Open(&mut address) }
+        let socket = ffi::SDLNet_TCP_Open(&mut address);
+        if socket as *const _TCPsocket != ptr::null() {
+            Some(TCPsocket { opaquePtr: socket })
+        } else {
+            None
+        }    
     }
 }
 
