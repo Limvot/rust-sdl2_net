@@ -127,13 +127,13 @@ pub fn del_socket(set: SocketSet, sock: TCPsocket) -> i32 {
     }
 }
 
-pub fn check_sockets(set: SocketSet, timeout: u32) -> i32 {
+pub fn check_sockets<'b>(set: &'b SocketSet, timeout: u32) -> i32 {
     unsafe {
         ffi::SDLNet_CheckSockets(set.opaquePtr, timeout)
     }
 }
 
-pub fn socket_ready(sock: TCPsocket) -> i32 {
+pub fn socket_ready<'c>(sock: &'c TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_SocketReady(sock.opaquePtr)
     }
