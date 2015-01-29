@@ -69,31 +69,31 @@ pub fn tcp_open() -> Option<TCPsocket> {
     }
 }
 
-pub fn tcp_close(sock: TCPsocket) -> () {
+pub fn tcp_close<'a>(sock: &'a TCPsocket) -> () {
     unsafe {
         ffi::SDLNet_TCP_Close(sock.opaquePtr)
     }
 }
 
-pub fn tcp_accept(server: TCPsocket) -> TCPsocket {
+pub fn tcp_accept<'a>(server: &'a TCPsocket) -> TCPsocket {
     unsafe {
         TCPsocket { opaquePtr: ffi::SDLNet_TCP_Accept(server.opaquePtr) }
     }
 }
 
-pub fn tcp_get_peer_address(sock: TCPsocket) -> Box<*mut IPaddress> {
+pub fn tcp_get_peer_address<'a>(sock: &'a TCPsocket) -> Box<*mut IPaddress> {
     unsafe {
         Box::new(ffi::SDLNet_TCP_GetPeerAddress(sock.opaquePtr))
     }
 }
 
-pub fn tcp_send(sock: TCPsocket, data: &[u8]) -> () {
+pub fn tcp_send<'a>(sock: &'a TCPsocket, data: &[u8]) -> () {
     unsafe {
         ffi::SDLNet_TCP_Send(sock.opaquePtr, data.as_ptr() as *const c_void, data.len() as i32);
     }
 }
 
-pub fn tcp_recv(sock: TCPsocket, maxlen: i32) -> Vec<u8> {
+pub fn tcp_recv<'a>(sock: &'a TCPsocket, maxlen: i32) -> Vec<u8> {
     let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
     unsafe {
         let read_ammnt = ffi::SDLNet_TCP_Recv(sock.opaquePtr, data.as_mut_ptr() as *mut c_void, data.len() as i32);
@@ -108,7 +108,7 @@ pub fn alloc_socket_set(maxsockets: i32) -> SocketSet {
     }
 }
 
-pub fn free_socket_set(set: SocketSet) -> () {
+pub fn free_socket_set<'a>(set: &'a SocketSet) -> () {
     unsafe {
         ffi::SDLNet_FreeSocketSet(set.opaquePtr);
     }
@@ -121,7 +121,7 @@ pub fn add_socket<'a>(set: &'a SocketSet, sock: &'a TCPsocket) -> i32 {
 }
 
 // Maybe should take in the box here as it may get deleted.... not sure
-pub fn del_socket(set: SocketSet, sock: TCPsocket) -> i32 {
+pub fn del_socket<'a>(set: &'a SocketSet, sock: &'a TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_DelSocket(set.opaquePtr, sock.opaquePtr)
     }
@@ -135,6 +135,6 @@ pub fn check_sockets<'b>(set: &'b SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready<'c>(sock: &'c TCPsocket) -> i32 {
     unsafe {
-        ffi::SDLNet_SocketReady(sock.opaquePtr as *mut _SDLNet_GenericSocket)
+        ffi::SDLNet_SocketReady(sock.opaquePtr as *mut c_void)
     }
 }
