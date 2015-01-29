@@ -104,7 +104,7 @@ pub fn tcp_recv(sock: &TCPsocket, maxlen: i32) -> Vec<u8> {
 
 pub fn alloc_socket_set(maxsockets: i32) -> SocketSet {
     unsafe {
-        SocketSet { opaquePtr: ffi::SDLNet_AllocSocketSet(maxsockets) }
+        SocketSet { opaquePtr: ffi::SDLNet_AllocSocketSet() }
     }
 }
 
