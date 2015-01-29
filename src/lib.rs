@@ -114,16 +114,16 @@ pub fn free_socket_set(set: SocketSet) -> () {
     }
 }
 
-pub fn tcp_add_socket(set: SocketSet, sock: TCPsocket) -> i32 {
+pub fn add_socket(set: SocketSet, sock: TCPsocket) -> i32 {
     unsafe {
-        ffi::SDLNet_TCP_AddSocket(set.opaquePtr, sock.opaquePtr)
+        ffi::SDLNet_AddSocket(set.opaquePtr, sock.opaquePtr)
     }
 }
 
 // Maybe should take in the box here as it may get deleted.... not sure
-pub fn tcp_del_socket(set: SocketSet, sock: TCPsocket) -> i32 {
+pub fn del_socket(set: SocketSet, sock: TCPsocket) -> i32 {
     unsafe {
-        ffi::SDLNet_TCP_DelSocket(set.opaquePtr, sock.opaquePtr)
+        ffi::SDLNet_DelSocket(set.opaquePtr, sock.opaquePtr)
     }
 }
 

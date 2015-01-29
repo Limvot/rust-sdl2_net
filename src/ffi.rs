@@ -48,8 +48,8 @@ extern "C" {
     // Socket Sets
     pub fn SDLNet_AllocSocketSet(maxsockets: c_int) -> *mut _SDLNet_SocketSet;
     pub fn SDLNet_FreeSocketSet(set: *mut _SDLNet_SocketSet) -> ();
-    pub fn SDLNet_TCP_AddSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
-    pub fn SDLNet_TCP_DelSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
+    pub fn SDLNet_AddSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
+    pub fn SDLNet_DelSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
     pub fn SDLNet_CheckSockets(set: *mut _SDLNet_SocketSet, timeout: u32) -> c_int;
     pub fn SDLNet_SocketReady(sock: *mut _TCPsocket) -> c_int; // documentation unclear as to what it takes in - assmuing tcp for now
 }
