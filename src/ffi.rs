@@ -48,7 +48,7 @@ extern "C" {
 
     // Socket Sets
     // REMOVED 'maxsockets: c_int' to test namespaces!
-    pub fn SDLNet_AllocSocketSet() -> *mut _SDLNet_SocketSet;
+    pub fn SDLNet_AllocSocketSet(a: u32, b: u32, c: u32) -> *mut _SDLNet_SocketSet;
     pub fn SDLNet_FreeSocketSet(set: *mut _SDLNet_SocketSet) -> ();
     pub fn SDLNet_AddSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
     pub fn SDLNet_DelSocket(set: *mut _SDLNet_SocketSet, sock: *mut _TCPsocket) -> c_int;
