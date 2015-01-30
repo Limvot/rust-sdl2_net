@@ -135,6 +135,6 @@ pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready(sock: &TCPsocket) -> i32 {
     unsafe {
-        ffi::_SDLNet_SocketReady(sock.opaquePtr as *mut c_void)
+        ffi::SDLNet_SocketReady(sock.opaquePtr as *mut c_void)
     }
 }
