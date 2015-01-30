@@ -14,6 +14,10 @@ pub struct TCPsocket {
 pub struct SocketSet {
     opaquePtr: *mut _SDLNet_SocketSet,
 }
+#[repr(C)]
+pub struct CustTCPSocket {
+    ready: i32,
+}
 
 pub fn init() -> () { unsafe { ffi::SDLNet_Init(); } }
 pub fn quit() -> () { unsafe { ffi::SDLNet_Quit(); } }
@@ -135,6 +139,6 @@ pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready(sock: &TCPsocket) -> i32 {
     unsafe {
-        ffi::SDLNet_SocketReady(sock.opaquePtr as *mut c_void)
+        (std::mem::transmute<ffi::_TCPSocket,&CustTCPSocket>(sock.opaquePtr)).ready
     }
 }
