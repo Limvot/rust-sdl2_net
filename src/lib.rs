@@ -14,6 +14,9 @@ pub struct TCPsocket {
 pub struct SocketSet {
     opaquePtr: *mut _SDLNet_SocketSet,
 }
+pub struct IPAddress {
+    opaquePtr: *mut IPaddress,
+}
 #[repr(C)]
 pub struct CustTCPSocket {
     ready: i32,
@@ -61,10 +64,10 @@ pub fn resolve_ip(mut address: IPaddress) -> String {
     }
 }
 
-pub fn tcp_open() -> Option<TCPsocket> {
-    let mut address = ffi::IPaddress { host: 0, port: 0};
+pub fn tcp_open(address: &mut IPaddress) -> Option<TCPsocket> {
+    //let mut address = ffi::IPaddress { host: 0, port: 0};
     unsafe {
-        let socket = ffi::SDLNet_TCP_Open(&mut address);
+        let socket = ffi::SDLNet_TCP_Open(address);
         if socket as *const _TCPsocket != ptr::null() {
             Some(TCPsocket { opaquePtr: socket })
         } else {
