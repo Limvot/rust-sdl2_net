@@ -26,7 +26,7 @@ mod others {
 
 extern "C" {
     //General
-    pub fn SDLNet_Init() -> ();
+    pub fn SDLNet_Init() -> c_int;
     pub fn SDLNet_Quit() -> ();
     pub fn SDLNet_GetError() -> *const c_char;
 

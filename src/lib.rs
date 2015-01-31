@@ -22,7 +22,7 @@ pub struct CustTCPSocket {
     ready: i32,
 }
 
-pub fn init() -> () { unsafe { ffi::SDLNet_Init(); } }
+pub fn init() -> bool { unsafe { ffi::SDLNet_Init() == 0 } }
 pub fn quit() -> () { unsafe { ffi::SDLNet_Quit(); } }
 pub fn get_error() -> String {
     unsafe {
