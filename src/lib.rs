@@ -31,6 +31,7 @@ pub fn get_error() -> String {
     }
 }
 
+// Returns an IPaddress struct if successful in becoming a host on the given port
 pub fn become_host(port: u16) -> Option<ffi::IPaddress> {
     let mut address = ffi::IPaddress { host: 0, port: 0};
     let mut result = 0;
@@ -44,6 +45,7 @@ pub fn become_host(port: u16) -> Option<ffi::IPaddress> {
     }
 }
 
+// Resolves the host from the given IP and porn
 pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
     let mut address = ffi::IPaddress { host: 0, port: 0 };
     let mut result = 0;
@@ -57,6 +59,7 @@ pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
     }
 }
 
+// Resolves the given IP from the given IPaddress struct
 pub fn resolve_ip(mut address: IPaddress) -> String {
     unsafe {
         let raw = &ffi::SDLNet_ResolveIP(&mut address);
@@ -64,6 +67,7 @@ pub fn resolve_ip(mut address: IPaddress) -> String {
     }
 }
 
+// Returns a TCPsocket from the data given in the IPaddress object
 pub fn tcp_open(address: &mut IPaddress) -> Option<TCPsocket> {
     //let mut address = ffi::IPaddress { host: 0, port: 0};
     unsafe {
@@ -76,15 +80,22 @@ pub fn tcp_open(address: &mut IPaddress) -> Option<TCPsocket> {
     }
 }
 
+// Closes the given TCPsocket
 pub fn tcp_close(sock: &TCPsocket) -> () {
     unsafe {
         ffi::SDLNet_TCP_Close(sock.opaquePtr)
     }
 }
 
-pub fn tcp_accept(server: &TCPsocket) -> TCPsocket {
+// Accepts a TCP connection on the given socket, returning the new socket of the connection
+pub fn tcp_accept(server: &TCPsocket) -> Option<TCPsocket> {
     unsafe {
-        TCPsocket { opaquePtr: ffi::SDLNet_TCP_Accept(server.opaquePtr) }
+        let socket =  ffi::SDLNet_TCP_Accept(server.opaquePtr);
+        if socket as *const _TCPsocket != ptr::null() {
+            Some(TCPsocket { opaquePtr: socket})
+        } else {
+            None
+        }
     }
 }
 
@@ -94,12 +105,14 @@ pub fn tcp_get_peer_address(sock: &TCPsocket) -> Box<*mut IPaddress> {
     }
 }
 
+// Writes the data out
 pub fn tcp_send(sock: &TCPsocket, data: &[u8]) -> () {
     unsafe {
         ffi::SDLNet_TCP_Send(sock.opaquePtr, data.as_ptr() as *const c_void, data.len() as i32);
     }
 }
 
+// Receives incoming data
 pub fn tcp_recv(sock: &TCPsocket, maxlen: i32) -> Vec<u8> {
     let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
     unsafe {
@@ -109,18 +122,21 @@ pub fn tcp_recv(sock: &TCPsocket, maxlen: i32) -> Vec<u8> {
     data
 }
 
+// Allocates a socket set to hold the given number of sockets
 pub fn alloc_socket_set(maxsockets: i32) -> SocketSet {
     unsafe {
         SocketSet { opaquePtr: ffi::SDLNet_AllocSocketSet(maxsockets) }
     }
 }
 
+// Frees the given socket set
 pub fn free_socket_set(set: &SocketSet) -> () {
     unsafe {
         ffi::SDLNet_FreeSocketSet(set.opaquePtr);
     }
 }
 
+// Adds a given socket to the given socket set
 pub fn add_socket(set: &SocketSet, sock: &TCPsocket) -> i32 {
     unsafe {
         ffi::SDLNet_AddSocket(set.opaquePtr, sock.opaquePtr)
@@ -134,6 +150,7 @@ pub fn del_socket(set: &SocketSet, sock: &TCPsocket) -> i32 {
     }
 }
 
+// Returns the incoming data amount  on the given socketset
 pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
     unsafe {
         ffi::SDLNet_CheckSockets(set.opaquePtr, timeout)
