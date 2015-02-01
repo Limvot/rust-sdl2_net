@@ -157,8 +157,8 @@ pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
     }
 }
 
-pub fn socket_ready(sock: &TCPsocket) -> i32 {
+pub fn socket_ready(sock: &TCPsocket) -> bool {
     unsafe {
-        (std::mem::transmute::<*mut ffi::_TCPsocket,&CustTCPSocket>(sock.opaquePtr)).ready
+        (std::mem::transmute::<*mut ffi::_TCPsocket,&CustTCPSocket>(sock.opaquePtr)).ready != 0
     }
 }
