@@ -113,13 +113,15 @@ pub fn tcp_send(sock: &TCPsocket, data: &[u8]) -> () {
 }
 
 // Receives incoming data
-pub fn tcp_recv(sock: &TCPsocket, maxlen: i32) -> Vec<u8> {
-    let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
+pub fn tcp_recv(sock: &TCPsocket, data: *mut u8, maxlen: i32) -> i32 {//Vec<u8> {
+    //let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
+    let mut read_amnt = 0;
     unsafe {
-        let read_ammnt = ffi::SDLNet_TCP_Recv(sock.opaquePtr, data.as_mut_ptr() as *mut c_void, data.len() as i32);
-        data.set_len(read_ammnt as usize);
+        read_amnt = ffi::SDLNet_TCP_Recv(sock.opaquePtr, data as *mut c_void, maxlen as i32);
+        //data.set_len(read_ammnt as usize);
     }
-    data
+    //data
+    read_amnt
 }
 
 // Allocates a socket set to hold the given number of sockets
