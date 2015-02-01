@@ -106,9 +106,9 @@ pub fn tcp_get_peer_address(sock: &TCPsocket) -> Box<*mut IPaddress> {
 }
 
 // Writes the data out
-pub fn tcp_send(sock: &TCPsocket, data: *mut u8, len: u32) -> () {
+pub fn tcp_send(sock: &TCPsocket, data: *mut u8, len: u32) -> i32 {
     unsafe {
-        ffi::SDLNet_TCP_Send(sock.opaquePtr, data as *const c_void, len as i32);
+        ffi::SDLNet_TCP_Send(sock.opaquePtr, data as *const c_void, len as i32)
     }
 }
 

@@ -39,7 +39,7 @@ extern "C" {
     pub fn SDLNet_TCP_Close(sock: *mut _TCPsocket) -> ();
     pub fn SDLNet_TCP_Accept(server: *mut _TCPsocket) -> *mut _TCPsocket;
     pub fn SDLNet_TCP_GetPeerAddress(sock: *mut _TCPsocket) -> *mut IPaddress;
-    pub fn SDLNet_TCP_Send(sock: *mut _TCPsocket, data : *const c_void, len: c_int) -> ();
+    pub fn SDLNet_TCP_Send(sock: *mut _TCPsocket, data : *const c_void, len: c_int) -> c_int;
     pub fn SDLNet_TCP_Recv(sock: *mut _TCPsocket, data: *mut c_void, maxlen: c_int) -> c_int;
 
     // UDP Sockets
