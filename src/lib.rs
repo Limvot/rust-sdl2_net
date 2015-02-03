@@ -9,10 +9,10 @@ pub mod ffi;
 pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
 pub struct TCPsocket {
-    opaquePtr: *mut _TCPsocket,
+    opaquePtr: *const _TCPsocket,
 }
 pub struct SocketSet {
-    opaquePtr: *mut _SDLNet_SocketSet,
+    opaquePtr: *const _SDLNet_SocketSet,
 }
 pub struct IPAddress {
     opaquePtr: *mut IPaddress,
@@ -161,6 +161,6 @@ pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready(sock: &TCPsocket) -> bool {
     unsafe {
-        (std::mem::transmute::<*mut ffi::_TCPsocket,&CustTCPSocket>(sock.opaquePtr)).ready != 0
+        (std::mem::transmute::<*const ffi::_TCPsocket,&CustTCPSocket>(sock.opaquePtr)).ready != 0
     }
 }
