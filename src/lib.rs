@@ -9,10 +9,10 @@ pub mod ffi;
 pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
 pub struct TCPsocket {
-    opaquePtr: *const _TCPsocket,
+    pub opaquePtr: *const _TCPsocket,
 }
 pub struct SocketSet {
-    opaquePtr: *const _SDLNet_SocketSet,
+    pub opaquePtr: *const _SDLNet_SocketSet,
 }
 pub struct IPAddress {
     opaquePtr: *mut IPaddress,
