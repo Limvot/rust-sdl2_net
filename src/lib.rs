@@ -1,3 +1,6 @@
+#![feature(libc)]
+#![feature(std_misc)]
+
 extern crate libc;
 
 use libc::c_void;
@@ -12,9 +15,6 @@ pub struct TCPsocket {
 }
 pub struct SocketSet {
     opaque_ptr: *const _SDLNet_SocketSet,
-}
-pub struct IPAddress {
-    opaque_ptr: *mut IPaddress,
 }
 #[repr(C)]
 pub struct CustTCPSocket {
@@ -41,7 +41,7 @@ pub fn become_host(port: u16) -> Option<ffi::IPaddress> {
     }
 }
 
-// Resolves the host from the given IP and porn
+// Resolves the host from the given IP and port
 pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
     let mut address = ffi::IPaddress { host: 0, port: 0 };
     let result = unsafe { ffi::SDLNet_ResolveHost(&mut address, CString::from_slice(host.as_bytes()).as_ptr(), port) };
@@ -103,22 +103,17 @@ pub fn tcp_get_peer_address(sock: &TCPsocket) -> Option<IPaddress> {
 }
 
 // Writes the data out
-pub fn tcp_send(sock: &TCPsocket, data: *mut u8, len: u32) -> i32 {
+pub fn tcp_send(sock: &TCPsocket, data: &mut [u8]) -> i32 {
     unsafe {
-        ffi::SDLNet_TCP_Send(sock.opaque_ptr, data as *const c_void, len as i32)
+        ffi::SDLNet_TCP_Send(sock.opaque_ptr, &data[0] as *const u8 as *const c_void, data.len() as i32)
     }
 }
 
 // Receives incoming data
-pub fn tcp_recv(sock: &TCPsocket, data: *mut u8, maxlen: i32) -> i32 {//Vec<u8> {
-    //let mut data: Vec<u8> = Vec::with_capacity(maxlen as usize);
-    let mut read_amnt = 0;
+pub fn tcp_recv(sock: &TCPsocket, data: &mut [u8]) -> i32 {
     unsafe {
-        read_amnt = ffi::SDLNet_TCP_Recv(sock.opaque_ptr, data as *mut c_void, maxlen as i32);
-        //data.set_len(read_ammnt as usize);
+        ffi::SDLNet_TCP_Recv(sock.opaque_ptr, &mut data[0] as *mut u8 as *mut c_void, data.len() as i32)
     }
-    //data
-    read_amnt
 }
 
 // Allocates a socket set to hold the given number of sockets
