@@ -7,3 +7,4 @@ description = "SDL2_net bindings and wrappers"
 licence = "MIT"
 
 [dependencies]
+sdl2 = "0.0.24"
