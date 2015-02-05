@@ -3,7 +3,9 @@ use libc::{c_int, c_char, c_void};
 
 #[repr(C)]
 pub struct IPaddress { pub host: u32, pub port: u16 }
+#[repr(C)]
 pub struct _TCPsocket;
+#[repr(C)]
 pub struct _SDLNet_SocketSet;
 
 // Linking setup (using https://github.com/xsleonard/rust-sdl2_image/ as an example)
