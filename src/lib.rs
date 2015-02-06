@@ -1,5 +1,6 @@
 #![feature(libc)]
 #![feature(std_misc)]
+#![feature(core)]
 
 extern crate libc;
 
@@ -10,12 +11,15 @@ use std::ptr;
 pub mod ffi;
 pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
+#[allow(missing_copy_implementations)]
 pub struct TCPsocket {
     pub opaque_ptr: *const _TCPsocket,
 }
+#[allow(missing_copy_implementations)]
 pub struct SocketSet {
     pub opaque_ptr: *const _SDLNet_SocketSet,
 }
+#[allow(missing_copy_implementations)]
 #[repr(C)]
 pub struct CustTCPSocket {
     ready: i32,

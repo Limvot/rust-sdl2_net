@@ -1,12 +1,16 @@
-// sdl stuff here?
 use libc::{c_int, c_char, c_void};
 
+#[allow(missing_copy_implementations)]
 #[repr(C)]
 pub struct IPaddress { pub host: u32, pub port: u16 }
+#[allow(missing_copy_implementations)]
 #[repr(C)]
 pub struct _TCPsocket;
+#[allow(missing_copy_implementations)]
 #[repr(C)]
 pub struct _SDLNet_SocketSet;
+#[allow(missing_copy_implementations)]
+#[repr(C)]
 pub struct _SDLNet_GenericSocket;
 unsafe impl Sync for *const _TCPsocket {}
 unsafe impl Sync for *const _SDLNet_SocketSet {}

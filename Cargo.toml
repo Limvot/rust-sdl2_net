@@ -3,8 +3,17 @@
 name = "sdl2_net"
 version = "0.0.1"
 authors = ["Nathan Braswell <miloignis@gmail.com>"]
-description = "SDL2_net bindings and wrappers"
-licence = "MIT"
+description = "Safe but close to the source SDL2_net bindings and wrappers"
+license = "MIT"
+license-file = "LICENSE.md"
+
+documentation = "https://github.com/Limvot/rust-sdl2_net"
+homepage = "https://github.com/Limvot/rust-sdl2_net"
+repository = "https://github.com/Limvot/rust-sdl2_net"
+
+keywords = ["sdl", "sdl2", "networking", "internet", "sdl2_net"]
+
+readme = "README.md"
 
 [dependencies]
 sdl2 = "0.0.24"
