@@ -1,8 +1,8 @@
 [package]
 
 name = "sdl2_net"
-version = "0.0.1"
-authors = ["Nathan Braswell <miloignis@gmail.com>"]
+version = "0.0.2"
+authors = ["Nathan Braswell <miloignis@gmail.com>", "Preston Tuner <prestonturner42@gmail.com>"]
 description = "Safe but close to the source SDL2_net bindings and wrappers"
 license = "MIT"
 license-file = "LICENSE.md"

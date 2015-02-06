@@ -21,7 +21,7 @@ pub struct SocketSet {
 }
 #[allow(missing_copy_implementations)]
 #[repr(C)]
-pub struct CustTCPSocket {
+pub struct CustGeneralSocket {
     ready: i32,
 }
 
@@ -160,6 +160,6 @@ pub fn check_sockets(set: &SocketSet, timeout: u32) -> i32 {
 
 pub fn socket_ready(sock: &TCPsocket) -> bool {
     unsafe {
-        (std::mem::transmute::<*const ffi::_TCPsocket,&CustTCPSocket>(sock.opaque_ptr)).ready != 0
+        (std::mem::transmute::<*const ffi::_TCPsocket,&CustGeneralSocket>(sock.opaque_ptr)).ready != 0
     }
 }
