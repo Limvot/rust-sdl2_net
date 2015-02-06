@@ -11,18 +11,18 @@ pub mod ffi;
 pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
 pub struct TCPsocket {
-    opaque_ptr: *const _TCPsocket,
+    pub opaque_ptr: *const _TCPsocket,
 }
 pub struct SocketSet {
-    opaque_ptr: *const _SDLNet_SocketSet,
+    pub opaque_ptr: *const _SDLNet_SocketSet,
 }
 #[repr(C)]
 pub struct CustTCPSocket {
     ready: i32,
 }
 
-pub static EMPTY_SOCKET_SET: SocketSet = SocketSet {opaque_ptr: 0 as *const _SDLNet_SocketSet};
-pub static EMPTY_TCPSOCKET: TCPsocket = TCPsocket {opaque_ptr: 0 as *const _TCPsocket};
+//pub static EMPTY_SOCKET_SET: SocketSet = SocketSet {opaque_ptr: 0 as *const _SDLNet_SocketSet};
+//pub static EMPTY_TCPSOCKET: TCPsocket = TCPsocket {opaque_ptr: 0 as *const _TCPsocket};
 
 pub fn init() -> bool { unsafe { ffi::SDLNet_Init() == 0 } }
 pub fn quit() -> () { unsafe { ffi::SDLNet_Quit(); } }
