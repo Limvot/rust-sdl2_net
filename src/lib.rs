@@ -9,11 +9,15 @@ use std::ffi::CString;
 use std::ptr;
 
 pub mod ffi;
-pub use ffi::{IPaddress, _TCPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
+pub use ffi::{IPaddress, _TCPsocket, _UDPsocket, _SDLNet_SocketSet, _SDLNet_GenericSocket};
 
 #[allow(missing_copy_implementations)]
 pub struct TCPsocket {
     pub opaque_ptr: *const _TCPsocket,
+}
+#[allow(missing_copy_implementations)]
+pub struct UDPsocket {
+    pub opaque_ptr: *const _UDPsocket,
 }
 #[allow(missing_copy_implementations)]
 pub struct SocketSet {
@@ -23,6 +27,15 @@ pub struct SocketSet {
 #[repr(C)]
 pub struct CustGeneralSocket {
     ready: i32,
+}
+
+pub struct UDPpacket {
+    pub channel: i32,
+    pub data: *mut u8,
+    pub len: *mut i32,
+    pub maxlen: i32,
+    pub status: i32,
+    pub address: IPaddress,
 }
 
 //pub static EMPTY_SOCKET_SET: SocketSet = SocketSet {opaque_ptr: 0 as *const _SDLNet_SocketSet};
@@ -67,6 +80,7 @@ pub fn resolve_ip(mut address: IPaddress) -> String {
     }
 }
 
+/**  TCP FUNCTIONS **/
 // Returns a TCPsocket from the data given in the IPaddress object
 pub fn tcp_open(address: &mut IPaddress) -> Option<TCPsocket> {
     unsafe {
@@ -80,9 +94,9 @@ pub fn tcp_open(address: &mut IPaddress) -> Option<TCPsocket> {
 }
 
 // Closes the given TCPsocket
-pub fn tcp_close(sock: &TCPsocket) -> () {
+pub fn tcp_close(socket: &TCPsocket) -> () {
     unsafe {
-        ffi::SDLNet_TCP_Close(sock.opaque_ptr)
+        ffi::SDLNet_TCP_Close(socket.opaque_ptr)
     }
 }
 
@@ -122,6 +136,40 @@ pub fn tcp_recv(sock: &TCPsocket, data: &mut [u8]) -> i32 {
         ffi::SDLNet_TCP_Recv(sock.opaque_ptr, &mut data[0] as *mut u8 as *mut c_void, data.len() as i32)
     }
 }
+
+
+/** UDP FUNCTIONS **/
+pub fn udp_open(port: u16) -> Option<UDPsocket> {
+    unsafe {
+        let socket = ffi::SDLNet_UDP_Open(port);
+        if socket as *const _UDPsocket != ptr::null() {
+            Some(UDPsocket { opaque_ptr: socket })
+        } else {
+            None
+        }    
+    }
+}
+
+pub fn udp_close(socket: &UDPsocket) {
+    unsafe {
+        ffi::SDLNet_UDP_Close(socket.opaque_ptr);
+    }
+}
+
+pub fn udp_bind(socket: &UDPsocket, channel: i32, ip: *mut IPaddress) -> i32 {
+    unsafe {
+        ffi::SDLNet_UDP_Bind(socket.opaque_ptr, channel, ip)
+    }
+}
+
+pub fn udp_unbind(socket: &UDPsocket, channel: i32) {
+    unsafe {
+        ffi:: SDLNet_UDP_Unbind(socket.opaque_ptr, channel);
+    }
+}
+
+
+/** SOCKET SETS **/
 
 // Allocates a socket set to hold the given number of sockets
 pub fn alloc_socket_set(maxsockets: i32) -> SocketSet {
