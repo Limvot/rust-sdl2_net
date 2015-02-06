@@ -21,6 +21,9 @@ pub struct CustTCPSocket {
     ready: i32,
 }
 
+static EMPTY_SOCKET_SET: SocketSet = SocketSet {opaque_ptr: 0 as *const _SDLNet_SocketSet};
+static EMPTY_TCPSOCKET: TCPsocket = TCPsocket {opaque_ptr: 0 as *const _TCPsocket};
+
 pub fn init() -> bool { unsafe { ffi::SDLNet_Init() == 0 } }
 pub fn quit() -> () { unsafe { ffi::SDLNet_Quit(); } }
 pub fn get_error() -> String {

@@ -8,6 +8,8 @@ pub struct _TCPsocket;
 #[repr(C)]
 pub struct _SDLNet_SocketSet;
 pub struct _SDLNet_GenericSocket;
+unsafe impl Sync for *const _TCPsocket {}
+unsafe impl Sync for *const _SDLNet_SocketSet {}
 
 // Linking setup (using https://github.com/xsleonard/rust-sdl2_image/ as an example)
 #[cfg(target_os="macos")]
