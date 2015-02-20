@@ -16,4 +16,4 @@ keywords = ["sdl", "sdl2", "networking", "internet", "sdl2_net"]
 readme = "README.md"
 
 [dependencies]
-sdl2 = "0.0.24"
+sdl2 = "0.0.27"
