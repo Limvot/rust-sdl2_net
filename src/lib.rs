@@ -6,6 +6,7 @@ extern crate libc;
 
 use libc::c_void;
 use std::ffi::CString;
+use std::ffi::CStr;
 use std::ptr;
 
 pub mod ffi;
@@ -46,7 +47,8 @@ pub fn quit() -> () { unsafe { ffi::SDLNet_Quit(); } }
 pub fn get_error() -> String {
     unsafe {
         let raw = &ffi::SDLNet_GetError();
-        std::str::from_utf8(std::ffi::c_str_to_bytes(raw)).unwrap().to_string()
+        let slice = CStr::from_ptr(*raw);
+        std::str::from_utf8(slice.to_bytes()).unwrap().to_string()
     }
 }
 
@@ -64,7 +66,7 @@ pub fn become_host(port: u16) -> Option<ffi::IPaddress> {
 // Resolves the host from the given IP and port
 pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
     let mut address = ffi::IPaddress { host: 0, port: 0 };
-    let result = unsafe { ffi::SDLNet_ResolveHost(&mut address, CString::from_slice(host.as_bytes()).as_ptr(), port) };
+    let result = unsafe { ffi::SDLNet_ResolveHost(&mut address, CString::new(host.as_bytes()).unwrap().as_ptr(), port) };
     if result == 0 {
         Some(address)
     } else {
@@ -76,7 +78,8 @@ pub fn resolve_host(host: &str, port: u16) -> Option<ffi::IPaddress> {
 pub fn resolve_ip(mut address: IPaddress) -> String {
     unsafe {
         let raw = &ffi::SDLNet_ResolveIP(&mut address);
-        std::str::from_utf8(std::ffi::c_str_to_bytes(raw)).unwrap().to_string()
+        let slice = CStr::from_ptr(*raw);
+        std::str::from_utf8(slice.to_bytes()).unwrap().to_string()
     }
 }
 
